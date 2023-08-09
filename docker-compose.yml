@@ -1,0 +1,23 @@
+version: "3.9"
+services:
+  server:
+    image: miza14/kafka-server:0.0
+    container_name: server
+    ports:
+      - 2181:2181
+      - 9092:9092
+    command: bash - c "bin/zookeeper-server-start.sh config/zookeeper.properties && bin/kafka-server-start.sh config/server.properties"
+    networks:
+      - kafka
+
+  consumer:
+    image: miza14/kafka-php-teste:0.0
+    container_name: consumer
+    depends_on:
+      - server
+    networks:
+      - kafka
+
+networks:
+  kafka:
+    driver: bridge
